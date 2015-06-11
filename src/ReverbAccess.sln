@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverbAccess", "BigCommerceAccess\ReverbAccess.csproj", "{2FAF71F9-3AD0-4C45-875F-78CA9F7B2FDA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A5F380E7-571C-45EE-92DD-D42700925B6C}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -12,7 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A5F380
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverbAccessTests", "BigCommerceAccessTests\ReverbAccessTests.csproj", "{6747DDB1-1658-4884-BAA5-09C89B85AB8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverbAccess", "ReverbAccess\ReverbAccess.csproj", "{2FAF71F9-3AD0-4C45-875F-78CA9F7B2FDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverbAccessTests", "ReverbAccessTests\ReverbAccessTests.csproj", "{6747DDB1-1658-4884-BAA5-09C89B85AB8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

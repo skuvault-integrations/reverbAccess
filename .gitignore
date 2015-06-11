@@ -31,5 +31,5 @@ _ReSharper*/
 #Ignore common build files
 build
 log
-BigCommerceCredentials.csv
-
+ReverbCredentials.csv
+ReverbCredentialsOld.csv

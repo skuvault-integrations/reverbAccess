@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReverbAccess.Models.Auth
 {
-    public class UserKeyType
-    {
-    }
+	public class UserKeyType
+	{
+	}
 }

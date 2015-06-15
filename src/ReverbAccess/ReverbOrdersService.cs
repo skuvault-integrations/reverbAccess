@@ -15,403 +15,406 @@ namespace ReverbAccess
 	{
 		private readonly WebRequestServices _webRequestServices;
 
-		public ReverbOrdersService( ReverbConfig config )
+		public ReverbOrdersService(ReverbConfig config)
 		{
-			Condition.Requires( config, "config" ).IsNotNull();
+			Condition.Requires(config, "config").IsNotNull();
 
-			this._webRequestServices = new WebRequestServices( config );
+			this._webRequestServices = new WebRequestServices(config);
 		}
 
 		#region Get
 
-        public ReverbOrder GetOrdersBuyingAll(DateTime dateFrom, DateTime dateTo)
-        {
-            ReverbOrder data;
-            var endpoint = String.Empty;
+		public ReverbOrder GetOrdersBuyingAll(DateTime dateFrom, DateTime dateTo)
+		{
+			ReverbOrder data;
+			var endpoint = String.Empty;
 
-            data = this.CollectOrdersBuyingAll(endpoint);
+			data = this.CollectOrdersBuyingAll(endpoint);
 
-            data = data ?? new ReverbOrder();
+			data = data ?? new ReverbOrder();
 
-            return data;
-        }
+			return data;
+		}
 
-        public async Task<ReverbOrder> GetOrdersBuyingAllAsync(DateTime dateFrom, DateTime dateTo)
-        {
-            ReverbOrder data;
-            var endpoint = String.Empty;
+		public async Task<ReverbOrder> GetOrdersBuyingAllAsync(DateTime dateFrom, DateTime dateTo)
+		{
+			ReverbOrder data;
+			var endpoint = String.Empty;
 
-            data = await this.CollectOrdersBuyingAllAsync(endpoint);
+			data = await this.CollectOrdersBuyingAllAsync(endpoint);
 
-            data = data ?? new ReverbOrder();
+			data = data ?? new ReverbOrder();
 
-            return data;
-        }
+			return data;
+		}
 
-        public ReverbOrder GetOrdersBuyingUnpaid(DateTime dateFrom, DateTime dateTo)
-        {
-            ReverbOrder data;
-            var endpoint = String.Empty;
+		public ReverbOrder GetOrdersBuyingUnpaid(DateTime dateFrom, DateTime dateTo)
+		{
+			ReverbOrder data;
+			var endpoint = String.Empty;
 
-            data = this.CollectOrdersBuyingUnpaid(endpoint);
+			data = this.CollectOrdersBuyingUnpaid(endpoint);
 
-            data = data ?? new ReverbOrder();
+			data = data ?? new ReverbOrder();
 
-            return data;
-        }
+			return data;
+		}
 
-        public async Task<ReverbOrder> GetOrdersBuyingUnpaidAsync(DateTime dateFrom, DateTime dateTo)
-        {
-            ReverbOrder data;
-            var endpoint = String.Empty;
+		public async Task<ReverbOrder> GetOrdersBuyingUnpaidAsync(DateTime dateFrom, DateTime dateTo)
+		{
+			ReverbOrder data;
+			var endpoint = String.Empty;
 
-            data = await this.CollectOrdersBuyingUnpaidAsync(endpoint);
+			data = await this.CollectOrdersBuyingUnpaidAsync(endpoint);
 
-            data = data ?? new ReverbOrder();
+			data = data ?? new ReverbOrder();
 
-            return data;
-        }
+			return data;
+		}
 
-        public IEnumerable<ReverbOrderEntity> GetOrders(DateTime dateFrom, DateTime dateTo, Int32? page = null, Int32? per_page = null)
-        {
-            List<ReverbOrderEntity> data;
+		public IEnumerable<ReverbOrderEntity> GetOrders(DateTime dateFrom, DateTime dateTo)
+		{
+			var reverbOrder = this.CollectOrdersSellingFromAllPages(dateFrom, dateTo);
+			List<ReverbOrderEntity> data = reverbOrder.orders != null
+				? reverbOrder.orders
+					.Select(x => new ReverbOrderEntity(x))
+					.ToList()
+				: new List<ReverbOrderEntity>();
 
-            if (!(page.HasValue && per_page.HasValue))
-            {
-                var reverbOrder = this.CollectOrdersSellingFromAllPages(dateFrom, dateTo);
-                data = reverbOrder.orders != null ?
-                        reverbOrder.orders
-                            .Select(x => new ReverbOrderEntity(x))
-                            .ToList() :
-                        new List<ReverbOrderEntity>();
-            }
-            else
-            {
-                var reverbOrder = this.CollectOrdersSellingFromSinglePage(dateFrom, dateTo, page.Value, per_page.Value);
-                data = reverbOrder.orders != null ?
-                        reverbOrder.orders
-                            .Select(x => new ReverbOrderEntity(x))
-                            .ToList() :
-                        new List<ReverbOrderEntity>();
-            }
+			//if (data.Count > 0)
+			//    data.FirstOrDefault().Sku = "603103-boom";
 
-            //if (data.Count > 0)
-            //    data.FirstOrDefault().Sku = "603103-boom";
+			return data;
+		}
 
-            return data;
-        }
+		public async Task<IEnumerable<ReverbOrderEntity>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo)
+		{
+			var reverbOrder = await this.CollectOrdersSellingFromAllPagesAsync(dateFrom, dateTo);
+			List<ReverbOrderEntity> data = reverbOrder.orders != null
+				? reverbOrder.orders
+					.Select(x => new ReverbOrderEntity(x))
+					.ToList()
+				: new List<ReverbOrderEntity>();
 
-        public async Task<IEnumerable<ReverbOrderEntity>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo, Int32? page = null, Int32? per_page = null)
-        {
-            List<ReverbOrderEntity> data;
+			//if (data.Count > 0)
+			//{
+			//    data.FirstOrDefault().Sku = "603103-boom";
+			//    data.FirstOrDefault().Quantity = 2;
+			//    //data.FirstOrDefault().StatusStr = "payment_pending";
+			//}
 
-            if (!(page.HasValue && per_page.HasValue))
-            {
-                var reverbOrder = await this.CollectOrdersSellingFromAllPagesAsync(dateFrom, dateTo);
-                data = reverbOrder.orders != null ?
-                        reverbOrder.orders
-                            .Select(x => new ReverbOrderEntity(x))
-                            .ToList() :
-                        new List<ReverbOrderEntity>();
-            }
-            else
-            {
-                var reverbOrder = await this.CollectOrdersSellingFromSinglePageAsync(dateFrom, dateTo, page.Value, per_page.Value);
-                data = reverbOrder.orders != null ?
-                        reverbOrder.orders
-                            .Select(x => new ReverbOrderEntity(x))
-                            .ToList() :
-                        new List<ReverbOrderEntity>();
-            }
+			return data;
+		}
 
-            //if (data.Count > 0)
-            //{
-            //    data.FirstOrDefault().Sku = "603103-boom";
-            //    data.FirstOrDefault().Quantity = 2;
-            //    //data.FirstOrDefault().StatusStr = "payment_pending";
-            //}
+		public ReverbOrder GetOrdersSellingUnpaid(DateTime dateFrom, DateTime dateTo)
+		{
+			ReverbOrder data;
+			var endpoint = String.Empty;
 
-            return data;
-        }
+			data = this.CollectOrdersSellingUnpaid(endpoint);
 
-        public ReverbOrder GetOrdersSellingUnpaid(DateTime dateFrom, DateTime dateTo)
-        {
-            ReverbOrder data;
-            var endpoint = String.Empty;
+			data = data ?? new ReverbOrder();
 
-            data = this.CollectOrdersSellingUnpaid(endpoint);
+			return data;
+		}
 
-            data = data ?? new ReverbOrder();
+		public async Task<ReverbOrder> GetOrdersSellingUnpaidAsync(DateTime dateFrom, DateTime dateTo)
+		{
+			ReverbOrder data;
+			var endpoint = String.Empty;
 
-            return data;
-        }
+			data = await this.CollectOrdersSellingUnpaidAsync(endpoint);
 
-        public async Task<ReverbOrder> GetOrdersSellingUnpaidAsync(DateTime dateFrom, DateTime dateTo)
-        {
-            ReverbOrder data;
-            var endpoint = String.Empty;
+			data = data ?? new ReverbOrder();
 
-            data = await this.CollectOrdersSellingUnpaidAsync(endpoint);
+			return data;
+		}
 
-            data = data ?? new ReverbOrder();
+		public ReverbOrder GetOrdersSellingAwaitingShipment(DateTime dateFrom, DateTime dateTo)
+		{
+			ReverbOrder data;
+			var endpoint = String.Empty;
 
-            return data;
-        }
+			data = this.CollectOrdersSellingAwaitingShipment(endpoint);
 
-        public ReverbOrder GetOrdersSellingAwaitingShipment(DateTime dateFrom, DateTime dateTo)
-        {
-            ReverbOrder data;
-            var endpoint = String.Empty;
+			data = data ?? new ReverbOrder();
 
-            data = this.CollectOrdersSellingAwaitingShipment(endpoint);
+			return data;
+		}
 
-            data = data ?? new ReverbOrder();
+		public async Task<ReverbOrder> GetOrdersSellingAwaitingShipmentAsync(DateTime dateFrom, DateTime dateTo)
+		{
+			ReverbOrder data;
+			var endpoint = String.Empty;
 
-            return data;
-        }
+			data = await this.CollectOrdersSellingAwaitingShipmentAsync(endpoint);
 
-        public async Task<ReverbOrder> GetOrdersSellingAwaitingShipmentAsync(DateTime dateFrom, DateTime dateTo)
-        {
-            ReverbOrder data;
-            var endpoint = String.Empty;
+			data = data ?? new ReverbOrder();
 
-            data = await this.CollectOrdersSellingAwaitingShipmentAsync(endpoint);
+			return data;
+		}
 
-            data = data ?? new ReverbOrder();
+		public Boolean IsOrdersReceived()
+		{
+			try
+			{
+				var endpoint = ParamsBuilder.CreateOrdersParams(DateTime.Now.AddMonths(-1), DateTime.Now, 1, Int32.MaxValue);
+				this._webRequestServices.GetResponse<ReverbOrder>(ReverbCommand.GetOrdersSellingAll, endpoint);
 
-            return data;
-        }
+				return true;
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
+		}
+
+		public async Task<Boolean> IsOrdersReceivedAsync()
+		{
+			try
+			{
+				var endpoint = ParamsBuilder.CreateOrdersParams(DateTime.Now.AddMonths(-1), DateTime.Now, 1, Int32.MaxValue);
+				await this._webRequestServices.GetResponseAsync<ReverbOrder>(ReverbCommand.GetOrdersSellingAll, endpoint);
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
+		}
 
 		#endregion
 
 		#region Update
-		
+
 		#endregion
 
 		#region Count
-		
+
 		#endregion
 
-        private ReverbOrder CollectOrdersBuyingAll(string endpoint)
-        {
-            ReverbOrder data = null;
+		private ReverbOrder CollectOrdersBuyingAll(string endpoint)
+		{
+			ReverbOrder data = null;
 
-            ActionPolicies.Get.Do(() =>
-            {
-                data = this._webRequestServices.GetResponse<ReverbOrder>(ReverbCommand.GetOrdersBuyingAll, endpoint);
+			ActionPolicies.Get.Do(() =>
+			{
+				data = this._webRequestServices.GetResponse<ReverbOrder>(ReverbCommand.GetOrdersBuyingAll, endpoint);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+				//API requirement
+				this.CreateApiDelay().Wait();
+			});
 
-            return data;
-        }
+			return data;
+		}
 
-        private async Task<ReverbOrder> CollectOrdersBuyingAllAsync(string endpoint)
-        {
-            ReverbOrder data = null;
+		private async Task<ReverbOrder> CollectOrdersBuyingAllAsync(string endpoint)
+		{
+			ReverbOrder data = null;
 
-            await ActionPolicies.GetAsync.Do(async () =>
-            {
-                data = await this._webRequestServices.GetResponseAsync<ReverbOrder>(ReverbCommand.GetOrdersBuyingAll, endpoint);
+			await ActionPolicies.GetAsync.Do(async () =>
+			{
+				data = await this._webRequestServices.GetResponseAsync<ReverbOrder>(ReverbCommand.GetOrdersBuyingAll, endpoint);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+				//API requirement
+				await this.CreateApiDelay();
+			});
 
-            return data;
-        }
+			return data;
+		}
 
-        private ReverbOrder CollectOrdersBuyingUnpaid(string endpoint)
-        {
-            ReverbOrder data = null;
+		private ReverbOrder CollectOrdersBuyingUnpaid(string endpoint)
+		{
+			ReverbOrder data = null;
 
-            ActionPolicies.Get.Do(() =>
-            {
-                data = this._webRequestServices.GetResponse<ReverbOrder>(ReverbCommand.GetOrdersBuyingUnpaid, endpoint);
+			ActionPolicies.Get.Do(() =>
+			{
+				data = this._webRequestServices.GetResponse<ReverbOrder>(ReverbCommand.GetOrdersBuyingUnpaid, endpoint);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+				//API requirement
+				this.CreateApiDelay().Wait();
+			});
 
-            return data;
-        }
+			return data;
+		}
 
-        private async Task<ReverbOrder> CollectOrdersBuyingUnpaidAsync(string endpoint)
-        {
-            ReverbOrder data = null;
+		private async Task<ReverbOrder> CollectOrdersBuyingUnpaidAsync(string endpoint)
+		{
+			ReverbOrder data = null;
 
-            await ActionPolicies.GetAsync.Do(async () =>
-            {
-                data = await this._webRequestServices.GetResponseAsync<ReverbOrder>(ReverbCommand.GetOrdersBuyingUnpaid, endpoint);
+			await ActionPolicies.GetAsync.Do(async () =>
+			{
+				data = await this._webRequestServices.GetResponseAsync<ReverbOrder>(ReverbCommand.GetOrdersBuyingUnpaid, endpoint);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+				//API requirement
+				await this.CreateApiDelay();
+			});
 
-            return data;
-        }
+			return data;
+		}
 
-        private ReverbOrder CollectOrdersSellingFromAllPages(DateTime dateFrom, DateTime dateTo)
-        {
-            ReverbOrder data = new ReverbOrder();
-            data.orders = new List<ReverbOrderItem>();
+		private ReverbOrder CollectOrdersSellingFromAllPages(DateTime dateFrom, DateTime dateTo)
+		{
+			ReverbOrder data = new ReverbOrder();
+			data.orders = new List<ReverbOrderItem>();
 
-            ReverbOrder dataItem = null;
+			ReverbOrder dataItem = null;
 
-            Int32 pageIndex = 1;
+			Int32 pageIndex = 1;
 
-            do
-            {
-                ActionPolicies.Get.Do(() =>
-                {
-                    dataItem = CollectOrdersSellingFromSinglePage(dateFrom, dateTo, pageIndex, Int32.MaxValue);
+			do
+			{
+				ActionPolicies.Get.Do(() =>
+				{
+					dataItem = CollectOrdersSellingFromSinglePage(dateFrom, dateTo, pageIndex, Int32.MaxValue);
 
-                    //API requirement
-                    this.CreateApiDelay().Wait();
+					//API requirement
+					this.CreateApiDelay().Wait();
 
-                    if (dataItem.orders != null)
-                    {
-                        data.orders.AddRange(dataItem.orders);
-                    }
+					if (dataItem.orders != null)
+					{
+						data.orders.AddRange(dataItem.orders);
+					}
 
-                    pageIndex++;
-                });
-            }
-            while (dataItem._links != null && dataItem._links.next != null);
+					pageIndex++;
+				});
+			} while (dataItem._links != null && dataItem._links.next != null);
 
-            return data;
-        }
+			return data;
+		}
 
-        private async Task<ReverbOrder> CollectOrdersSellingFromAllPagesAsync(DateTime dateFrom, DateTime dateTo)
-        {
-            ReverbOrder data = new ReverbOrder();
-            data.orders = new List<ReverbOrderItem>();
+		private async Task<ReverbOrder> CollectOrdersSellingFromAllPagesAsync(DateTime dateFrom, DateTime dateTo)
+		{
+			ReverbOrder data = new ReverbOrder();
+			data.orders = new List<ReverbOrderItem>();
 
-            ReverbOrder dataItem = null;
+			ReverbOrder dataItem = null;
 
-            Int32 pageIndex = 1;
+			Int32 pageIndex = 1;
 
-            do
-            {
-                await ActionPolicies.GetAsync.Do(async () =>
-                {
-                    dataItem = await CollectOrdersSellingFromSinglePageAsync(dateFrom, dateTo, pageIndex, Int32.MaxValue);
+			do
+			{
+				await ActionPolicies.GetAsync.Do(async () =>
+				{
+					dataItem = await CollectOrdersSellingFromSinglePageAsync(dateFrom, dateTo, pageIndex, Int32.MaxValue);
 
-                    //API requirement
-                    this.CreateApiDelay().Wait();
+					//API requirement
+					await this.CreateApiDelay();
 
-                    if (dataItem.orders != null)
-                    {
-                        data.orders.AddRange(dataItem.orders);
-                    }
+					if (dataItem.orders != null)
+					{
+						data.orders.AddRange(dataItem.orders);
+					}
 
-                    pageIndex++;
-                });
-            }
-            while (dataItem._links != null && dataItem._links.next != null);
+					pageIndex++;
+				});
+			} while (dataItem._links != null && dataItem._links.next != null);
 
-            return data;
-        }
+			return data;
+		}
 
-        private ReverbOrder CollectOrdersSellingFromSinglePage(DateTime dateFrom, DateTime dateTo, Int32 page, Int32 per_page)
-        {
-            ReverbOrder data = null;
+		private ReverbOrder CollectOrdersSellingFromSinglePage(DateTime dateFrom, DateTime dateTo, Int32 page, Int32 per_page)
+		{
+			ReverbOrder data = null;
 
-            var endpoint = ParamsBuilder.CreateOrdersParams(dateFrom, dateTo, page, per_page);
+			var endpoint = ParamsBuilder.CreateOrdersParams(dateFrom, dateTo, page, per_page);
 
-            ActionPolicies.Get.Do(() =>
-            {
-                data = this._webRequestServices.GetResponse<ReverbOrder>(ReverbCommand.GetOrdersSellingAll, endpoint);
+			ActionPolicies.Get.Do(() =>
+			{
+				data = this._webRequestServices.GetResponse<ReverbOrder>(ReverbCommand.GetOrdersSellingAll, endpoint);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+				//API requirement
+				this.CreateApiDelay().Wait();
+			});
 
-            if (data.orders != null)
-                data.orders = data.orders.Where(x => !String.IsNullOrEmpty(x.sku)).ToList();
+			if (data.orders != null)
+				data.orders = data.orders.Where(x => !String.IsNullOrEmpty(x.sku)).ToList();
 
-            return data;
-        }
+			return data;
+		}
 
-        private async Task<ReverbOrder> CollectOrdersSellingFromSinglePageAsync(DateTime dateFrom, DateTime dateTo, Int32 page, Int32 per_page)
-        {
-            ReverbOrder data = null;
+		private async Task<ReverbOrder> CollectOrdersSellingFromSinglePageAsync(DateTime dateFrom, DateTime dateTo, Int32 page,
+			Int32 per_page)
+		{
+			ReverbOrder data = null;
 
-            var endpoint = ParamsBuilder.CreateOrdersParams(dateFrom, dateTo, page, per_page);
+			var endpoint = ParamsBuilder.CreateOrdersParams(dateFrom, dateTo, page, per_page);
 
-            await ActionPolicies.GetAsync.Do(async () =>
-            {
-                data = await this._webRequestServices.GetResponseAsync<ReverbOrder>(ReverbCommand.GetOrdersSellingAll, endpoint);
+			await ActionPolicies.GetAsync.Do(async () =>
+			{
+				data = await this._webRequestServices.GetResponseAsync<ReverbOrder>(ReverbCommand.GetOrdersSellingAll, endpoint);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+				//API requirement
+				await this.CreateApiDelay();
+			});
 
-            if (data.orders != null)
-                data.orders = data.orders.Where(x => !String.IsNullOrEmpty(x.sku)).ToList();
+			if (data.orders != null)
+				data.orders = data.orders.Where(x => !String.IsNullOrEmpty(x.sku)).ToList();
 
-            return data;
-        }
+			return data;
+		}
 
-        private ReverbOrder CollectOrdersSellingUnpaid(string endpoint)
-        {
-            ReverbOrder data = null;
+		private ReverbOrder CollectOrdersSellingUnpaid(string endpoint)
+		{
+			ReverbOrder data = null;
 
-            ActionPolicies.Get.Do(() =>
-            {
-                data = this._webRequestServices.GetResponse<ReverbOrder>(ReverbCommand.GetOrdersSellingUnpaid, endpoint);
+			ActionPolicies.Get.Do(() =>
+			{
+				data = this._webRequestServices.GetResponse<ReverbOrder>(ReverbCommand.GetOrdersSellingUnpaid, endpoint);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+				//API requirement
+				this.CreateApiDelay().Wait();
+			});
 
-            return data;
-        }
+			return data;
+		}
 
-        private async Task<ReverbOrder> CollectOrdersSellingUnpaidAsync(string endpoint)
-        {
-            ReverbOrder data = null;
+		private async Task<ReverbOrder> CollectOrdersSellingUnpaidAsync(string endpoint)
+		{
+			ReverbOrder data = null;
 
-            await ActionPolicies.GetAsync.Do(async () =>
-            {
-                data = await this._webRequestServices.GetResponseAsync<ReverbOrder>(ReverbCommand.GetOrdersSellingUnpaid, endpoint);
+			await ActionPolicies.GetAsync.Do(async () =>
+			{
+				data = await this._webRequestServices.GetResponseAsync<ReverbOrder>(ReverbCommand.GetOrdersSellingUnpaid, endpoint);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+				//API requirement
+				await this.CreateApiDelay();
+			});
 
-            return data;
-        }
+			return data;
+		}
 
-        private ReverbOrder CollectOrdersSellingAwaitingShipment(string endpoint)
-        {
-            ReverbOrder data = null;
+		private ReverbOrder CollectOrdersSellingAwaitingShipment(string endpoint)
+		{
+			ReverbOrder data = null;
 
-            ActionPolicies.Get.Do(() =>
-            {
-                data = this._webRequestServices.GetResponse<ReverbOrder>(ReverbCommand.GetOrdersSellingAwaitingShipment, endpoint);
+			ActionPolicies.Get.Do(() =>
+			{
+				data = this._webRequestServices.GetResponse<ReverbOrder>(ReverbCommand.GetOrdersSellingAwaitingShipment, endpoint);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+				//API requirement
+				this.CreateApiDelay().Wait();
+			});
 
-            return data;
-        }
+			return data;
+		}
 
-        private async Task<ReverbOrder> CollectOrdersSellingAwaitingShipmentAsync(string endpoint)
-        {
-            ReverbOrder data = null;
+		private async Task<ReverbOrder> CollectOrdersSellingAwaitingShipmentAsync(string endpoint)
+		{
+			ReverbOrder data = null;
 
-            await ActionPolicies.GetAsync.Do(async () =>
-            {
-                data = await this._webRequestServices.GetResponseAsync<ReverbOrder>(ReverbCommand.GetOrdersSellingAwaitingShipment, endpoint);
+			await ActionPolicies.GetAsync.Do(async () =>
+			{
+				data =
+					await
+						this._webRequestServices.GetResponseAsync<ReverbOrder>(ReverbCommand.GetOrdersSellingAwaitingShipment, endpoint);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+				//API requirement
+				await this.CreateApiDelay();
+			});
 
-            return data;
-        }
+			return data;
+		}
 	}
 }

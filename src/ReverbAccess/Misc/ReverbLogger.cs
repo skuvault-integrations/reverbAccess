@@ -4,11 +4,11 @@ namespace ReverbAccess.Misc
 {
 	public class ReverbLogger
 	{
-		public static ILogger Log{ get; private set; }
+		public static ILogger Log { get; private set; }
 
 		static ReverbLogger()
 		{
-			Log = NetcoLogger.GetLogger( "ReverbLogger" );
+			Log = NetcoLogger.GetLogger("ReverbLogger");
 		}
 	}
 }

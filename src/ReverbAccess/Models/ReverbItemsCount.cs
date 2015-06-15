@@ -2,10 +2,10 @@
 
 namespace ReverbAccess.Models
 {
-	[ DataContract ]
-	sealed class ReverbItemsCount
+	[DataContract]
+	internal sealed class ReverbItemsCount
 	{
-		[ DataMember( Name = "count" ) ]
+		[DataMember(Name = "count")]
 		public int Count { get; set; }
 	}
 }

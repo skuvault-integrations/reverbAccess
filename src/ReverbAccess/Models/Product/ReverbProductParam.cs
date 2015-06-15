@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace ReverbAccess.Models.Product
 {
-    [DataContract]
-    public class ReverbProductParam
-    {
-        [DataMember(Name = "has_inventory")]
-        public bool HasInventory { get; set; }
+	[DataContract]
+	public class ReverbProductParam
+	{
+		[DataMember(Name = "has_inventory")]
+		public bool HasInventory { get; set; }
 
-        [DataMember(Name = "inventory")]
-        public int Inventory { get; set; }
+		[DataMember(Name = "inventory")]
+		public int Inventory { get; set; }
 
-        [DataMember(Name = "sku")]
-        public string Sku { get; set; }
+		[DataMember(Name = "sku")]
+		public string Sku { get; set; }
 
-        [DataMember(Name = "slug")]
-        public string Slug { get; set; }
-    }
+		[DataMember(Name = "slug")]
+		public string Slug { get; set; }
+	}
 }

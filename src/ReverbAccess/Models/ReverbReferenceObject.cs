@@ -2,13 +2,13 @@
 
 namespace ReverbAccess.Models
 {
-	[ DataContract ]
-    public sealed class ReverbReferenceObject
+	[DataContract]
+	public sealed class ReverbReferenceObject
 	{
-		[ DataMember( Name = "url" ) ]
+		[DataMember(Name = "url")]
 		public string Url { get; set; }
 
-		[ DataMember( Name = "resource" ) ]
+		[DataMember(Name = "resource")]
 		public string Resource { get; set; }
 	}
 }

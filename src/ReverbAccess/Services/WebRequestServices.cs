@@ -123,17 +123,10 @@ namespace ReverbAccess.Services
 
         public void PutFormatData(ReverbCommand command, string[] data, string jsonContent)
         {
-            try
-            {
-                var request = this.CreateServicePutFormatRequest(command, data, jsonContent);
-                this.LogPutInfo(this._config.Token, String.Join(",", data), jsonContent);
-                using (var response = (HttpWebResponse)request.GetResponse())
-                    this.LogUpdateInfo(this._config.Token, String.Join(",", data), response.StatusCode, jsonContent);
-            }
-            catch (Exception ex)
-            {
-                var t = 0;
-            }
+            var request = this.CreateServicePutFormatRequest(command, data, jsonContent);
+            this.LogPutInfo(this._config.Token, String.Join(",", data), jsonContent);
+            using (var response = (HttpWebResponse)request.GetResponse())
+                this.LogUpdateInfo(this._config.Token, String.Join(",", data), response.StatusCode, jsonContent);
         }
 
         public async Task PutFormatDataAsync(ReverbCommand command, string[] data, string jsonContent)

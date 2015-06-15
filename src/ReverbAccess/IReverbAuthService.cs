@@ -8,8 +8,8 @@ namespace ReverbAccess
 {
 	public interface IReverbAuthService
 	{
-        UserKeyToken GetUserToken(string email, string password);
+		UserKeyToken GetUserToken(string email, string password);
 
-        Task<UserKeyToken> GetUserTokenAsync(string email, string password);
+		Task<UserKeyToken> GetUserTokenAsync(string email, string password);
 	}
 }

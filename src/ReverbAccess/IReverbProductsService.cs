@@ -7,16 +7,13 @@ namespace ReverbAccess
 {
 	public interface IReverbProductsService
 	{
-        IEnumerable<ReverbProductEntity> GetProducts(String state, Int32? page = null, Int32? per_page = null);
-        Task<IEnumerable<ReverbProductEntity>> GetProductsAsync(String state, Int32? page = null, Int32? per_page = null);
+		IEnumerable<ReverbProductEntity> GetProducts(String state);
+		Task<IEnumerable<ReverbProductEntity>> GetProductsAsync(String state);
 
-        //ReverbProduct GetProductsDrafts(DateTime dateFrom, DateTime dateTo);
-        //Task<ReverbProduct> GetProductsDraftsAsync(DateTime dateFrom, DateTime dateTo);
+		void UpdateProducts(IEnumerable<ReverbProductEntity> products);
+		Task UpdateProductsAsync(IEnumerable<ReverbProductEntity> products);
 
-        //ReverbProductData GetProductsById(String id);
-        //Task<ReverbProductData> GetProductsByIdAsync(String id);
-
-        void UpdateProducts(IEnumerable<ReverbProductEntity> products);
-        Task UpdateProductsAsync(IEnumerable<ReverbProductEntity> products);
+		Boolean IsProductsReceived();
+		Task<Boolean> IsProductsReceivedAsync();
 	}
 }

@@ -12,43 +12,43 @@ namespace ReverbAccess
 	{
 		private readonly WebRequestServices _webRequestServices;
 
-        public ReverbAuthService(ReverbConfig config)
+		public ReverbAuthService(ReverbConfig config)
 		{
-			Condition.Requires( config, "config" ).IsNotNull();
+			Condition.Requires(config, "config").IsNotNull();
 
-			this._webRequestServices = new WebRequestServices( config );
+			this._webRequestServices = new WebRequestServices(config);
 		}
-        
-        public UserKeyToken GetUserToken(string email, string password)
-        {
-            UserKeyToken token = new UserKeyToken();
-            var endpoint = ParamsBuilder.CreateAuthParams(email, password);
 
-            ActionPolicies.Get.Do(() =>
-            {
-                token = this._webRequestServices.GetPostData<UserKeyToken>(ReverbCommand.GetToken, endpoint, "");
+		public UserKeyToken GetUserToken(string email, string password)
+		{
+			UserKeyToken token = new UserKeyToken();
+			var endpoint = ParamsBuilder.CreateAuthParams(email, password);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+			ActionPolicies.Get.Do(() =>
+			{
+				token = this._webRequestServices.GetPostData<UserKeyToken>(ReverbCommand.GetToken, endpoint, "");
 
-            return token;
-        }
+				//API requirement
+				this.CreateApiDelay().Wait();
+			});
 
-        public async Task<UserKeyToken> GetUserTokenAsync(string email, string password)
-        {
-            UserKeyToken token = new UserKeyToken();
-            var endpoint = ParamsBuilder.CreateAuthParams(email, password);
+			return token;
+		}
 
-            await ActionPolicies.GetAsync.Do(async () =>
-            {
-                token = await this._webRequestServices.GetPostDataAsync<UserKeyToken>(ReverbCommand.GetToken, endpoint, "");
+		public async Task<UserKeyToken> GetUserTokenAsync(string email, string password)
+		{
+			UserKeyToken token = new UserKeyToken();
+			var endpoint = ParamsBuilder.CreateAuthParams(email, password);
 
-                //API requirement
-                this.CreateApiDelay().Wait();
-            });
+			await ActionPolicies.GetAsync.Do(async () =>
+			{
+				token = await this._webRequestServices.GetPostDataAsync<UserKeyToken>(ReverbCommand.GetToken, endpoint, "");
 
-            return token;
-        }
+				//API requirement
+				await this.CreateApiDelay();
+			});
+
+			return token;
+		}
 	}
 }

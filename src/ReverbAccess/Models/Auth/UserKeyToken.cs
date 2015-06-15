@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ReverbAccess.Models.Auth
 {
-    public class UserKeyToken
-    {
-        public String token { get; set; }
-    }
+	public class UserKeyToken
+	{
+		public String token { get; set; }
+	}
 }

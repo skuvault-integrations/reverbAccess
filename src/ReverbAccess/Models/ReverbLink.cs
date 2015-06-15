@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ReverbAccess.Models
 {
-    public class ReverbLink
-    {
-        public String method { get; set; }
+	public class ReverbLink
+	{
+		public String method { get; set; }
 
-        public String href { get; set; }
-    }
+		public String href { get; set; }
+	}
 }

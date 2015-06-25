@@ -53,7 +53,6 @@
     <Compile Include="..\Global\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Auth\AuthTests.cs" />
     <Compile Include="Orders\OrderTests.cs" />
     <Compile Include="Products\ProductsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

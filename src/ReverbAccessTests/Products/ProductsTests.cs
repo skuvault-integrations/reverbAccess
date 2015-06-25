@@ -15,7 +15,7 @@ namespace ReverbAccessTests.Products
 {
 	public class ProductsTests
 	{
-		private readonly IReverbFactory ReverbFactory = new ReverbFactory();
+		private IReverbFactory ReverbFactory = new ReverbFactory();
 		private ReverbConfig Config;
 
 		[SetUp]
@@ -28,15 +28,17 @@ namespace ReverbAccessTests.Products
 				cc.Read<TestConfig>(credentialsFilePath, new CsvFileDescription {FirstLineHasColumnNames = true}).FirstOrDefault();
 
 			if (testConfig != null)
-				this.Config = new ReverbConfig(testConfig.UserName, testConfig.Password, testConfig.Token, testConfig.NLogin,
-					testConfig.NPassword, "https://sandbox.reverb.com");
+			{
+				this.ReverbFactory = new ReverbFactory(testConfig.NLogin, testConfig.NPassword, "https://sandbox.reverb.com");
+				this.Config = new ReverbConfig(testConfig.Token);
+			}
 		}
 
 		[Test]
 		public void GetProducts()
 		{
 			var service = this.ReverbFactory.CreateProductsService(this.Config);
-			var Products = service.GetProducts("all");
+			var Products = service.GetProducts();
 
 			Products.Should().NotBeNull();
 		}
@@ -45,7 +47,7 @@ namespace ReverbAccessTests.Products
 		public async Task GetProductsAsync()
 		{
 			var service = this.ReverbFactory.CreateProductsService(this.Config);
-			var Products = await service.GetProductsAsync("all");
+			var Products = await service.GetProductsAsync();
 
 			Products.Should().NotBeNull();
 		}

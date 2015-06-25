@@ -7,8 +7,8 @@ namespace ReverbAccess
 {
 	public interface IReverbProductsService
 	{
-		IEnumerable<ReverbProductEntity> GetProducts(String state);
-		Task<IEnumerable<ReverbProductEntity>> GetProductsAsync(String state);
+		IEnumerable<ReverbProductEntity> GetProducts();
+		Task<IEnumerable<ReverbProductEntity>> GetProductsAsync();
 
 		void UpdateProducts(IEnumerable<ReverbProductEntity> products);
 		Task UpdateProductsAsync(IEnumerable<ReverbProductEntity> products);

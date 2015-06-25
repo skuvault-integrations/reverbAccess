@@ -26,9 +26,9 @@ namespace ReverbAccess
 			this._webRequestServices = new WebRequestServices(config);
 		}
 
-		public IEnumerable<ReverbProductEntity> GetProducts(String state)
+		public IEnumerable<ReverbProductEntity> GetProducts()
 		{
-			ReverbProduct data = GetCommonProducts(state, null, null);
+			ReverbProduct data = GetCommonProducts("all", null, null);
 
 			return data.listings.Select(x => new ReverbProductEntity()
 			{
@@ -40,9 +40,9 @@ namespace ReverbAccess
 				.ToList();
 		}
 
-		public async Task<IEnumerable<ReverbProductEntity>> GetProductsAsync(String state)
+		public async Task<IEnumerable<ReverbProductEntity>> GetProductsAsync()
 		{
-			ReverbProduct data = await GetCommonProductsAsync(state, null, null);
+			ReverbProduct data = await GetCommonProductsAsync("all", null, null);
 
 			return data.listings.Select(x => new ReverbProductEntity()
 			{

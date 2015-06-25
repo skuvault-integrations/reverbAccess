@@ -16,7 +16,7 @@ namespace ReverbAccess.Misc
 		private static readonly ActionPolicy _ReverbSumbitPolicy = ActionPolicy.Handle< Exception >().Retry( 10, ( ex, i ) =>
 		{
 			ReverbLogger.Log.Trace( ex, "Retrying Reverb API submit call for the {0} time", i );
-			SystemUtil.Sleep( TimeSpan.FromSeconds( 0.5 + i ) );
+			SystemUtil.Sleep( TimeSpan.FromSeconds( i * 20 + 5 ) );
 		} );
 
 		public static ActionPolicyAsync SubmitAsync
@@ -27,7 +27,7 @@ namespace ReverbAccess.Misc
 		private static readonly ActionPolicyAsync _ReverbSumbitAsyncPolicy = ActionPolicyAsync.Handle< Exception >().RetryAsync( 10, async ( ex, i ) =>
 		{
 			ReverbLogger.Log.Trace( ex, "Retrying Reverb API submit call for the {0} time", i );
-			await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) );
+			await Task.Delay( TimeSpan.FromSeconds( i * 20 + 5 ) );
 		} );
 
 		public static ActionPolicy Get
@@ -38,7 +38,7 @@ namespace ReverbAccess.Misc
 		private static readonly ActionPolicy _ReverbGetPolicy = ActionPolicy.Handle< Exception >().Retry( 10, ( ex, i ) =>
 		{
 			ReverbLogger.Log.Trace( ex, "Retrying Reverb API get call for the {0} time", i );
-			SystemUtil.Sleep( TimeSpan.FromSeconds( 0.5 + i ) );
+			SystemUtil.Sleep( TimeSpan.FromSeconds( i * 20 + 5 ) );
 		} );
 
 		public static ActionPolicyAsync GetAsync
@@ -49,7 +49,7 @@ namespace ReverbAccess.Misc
 		private static readonly ActionPolicyAsync _ReverbGetAsyncPolicy = ActionPolicyAsync.Handle< Exception >().RetryAsync( 10, async ( ex, i ) =>
 		{
 			ReverbLogger.Log.Trace( ex, "Retrying Reverb API get call for the {0} time", i );
-			await Task.Delay( TimeSpan.FromSeconds( 0.5 + i ) );
+			await Task.Delay( TimeSpan.FromSeconds( i * 20 + 5 ) );
 		} );
 	}
 }

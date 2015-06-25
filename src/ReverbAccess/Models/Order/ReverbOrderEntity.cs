@@ -24,7 +24,7 @@ namespace ReverbAccess.Models.Order
 			this.NeedsFeedbackForBuyer = obj.needs_feedback_for_buyer;
 			this.NeedsFeedbackForSeller = obj.needs_feedback_for_seller;
 			this.OrderType = obj.order_type;
-			this.PaidAt = "2015-06-08T10:13:32-05:00"; //obj.paid_at;
+			this.PaidAt = obj.paid_at;
 			this.Quantity = obj.quantity;
 			this.LocalPickup = obj.local_pickup;
 			this.ShopName = obj.shop_name;

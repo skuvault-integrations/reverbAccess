@@ -57,7 +57,14 @@ namespace ReverbAccessTests.Products
 		{
 			var service = this.ReverbFactory.CreateProductsService(this.Config);
 
-			var listingToUpdate = new ReverbProductEntity {Slug = "603103-tadam", Inventory = 9, HasInventory = true};
+			var listingToUpdate = new ReverbProductEntity
+			{
+				Slug = "603158",
+				Sku = "tester1234",
+				Inventory = 12,
+				HasInventory = true
+			};
+
 			service.UpdateProducts(new[] {listingToUpdate});
 		}
 
@@ -66,7 +73,14 @@ namespace ReverbAccessTests.Products
 		{
 			var service = this.ReverbFactory.CreateProductsService(this.Config);
 
-			var listingToUpdate = new ReverbProductEntity {Slug = "603103-tadam", Inventory = 9, HasInventory = true};
+			var listingToUpdate = new ReverbProductEntity
+			{
+				Slug = "603158",
+				Sku = "tester1234",
+				Inventory = 12,
+				HasInventory = true
+			};
+
 			await service.UpdateProductsAsync(new[] {listingToUpdate});
 		}
 

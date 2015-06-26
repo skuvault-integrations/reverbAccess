@@ -33,7 +33,7 @@ namespace ReverbAccess
 			return data.listings.Select(x => new ReverbProductEntity()
 			{
 				Sku = !String.IsNullOrEmpty(x.sku) ? x.sku : String.Empty,
-				Slug = !String.IsNullOrEmpty(x.sku) ? x.sku : String.Empty,
+				Slug = !String.IsNullOrEmpty(x.unique_id) ? x.unique_id : String.Empty,
 				Inventory = x.inventory,
 				HasInventory = x.inventory != 0
 			})
@@ -47,7 +47,7 @@ namespace ReverbAccess
 			return data.listings.Select(x => new ReverbProductEntity()
 			{
 				Sku = !String.IsNullOrEmpty(x.sku) ? x.sku : String.Empty,
-				Slug = !String.IsNullOrEmpty(x.sku) ? x.sku : String.Empty,
+				Slug = !String.IsNullOrEmpty(x.unique_id) ? x.unique_id : String.Empty,
 				Inventory = x.inventory,
 				HasInventory = x.inventory != 0
 			})
@@ -109,7 +109,7 @@ namespace ReverbAccess
 				ReverbProductParam param = new ReverbProductParam()
 				{
 					Sku = item.Sku,
-					Slug = item.Sku,
+					Slug = item.Slug,
 					HasInventory = item.HasInventory,
 					Inventory = item.Inventory
 				};
@@ -125,7 +125,7 @@ namespace ReverbAccess
 				ReverbProductParam param = new ReverbProductParam()
 				{
 					Sku = item.Sku,
-					Slug = item.Sku,
+					Slug = item.Slug,
 					HasInventory = item.HasInventory,
 					Inventory = item.Inventory
 				};

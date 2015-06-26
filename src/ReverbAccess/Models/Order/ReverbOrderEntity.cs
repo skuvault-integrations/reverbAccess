@@ -34,6 +34,7 @@ namespace ReverbAccess.Models.Order
 			this.PaymentMethod = obj.payment_method;
 			this.ShippingAddress = obj.shipping_address;
 			this.ShippingProvider = obj.shipping_provider;
+			this.ShippingCode = obj.shipping_code;
 			this.Sku = obj.sku;
 		}
 
@@ -123,6 +124,8 @@ namespace ReverbAccess.Models.Order
 		public ReverbOrderItemShippingAddress ShippingAddress { get; set; }
 
 		public String ShippingProvider { get; set; }
+
+		public String ShippingCode { get; set; }
 
 		public String Sku { get; set; }
 	}

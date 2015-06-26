@@ -56,6 +56,8 @@ namespace ReverbAccess.Models.Order
 
 		public String shipping_provider { get; set; }
 
+		public String shipping_code { get; set; }
+
 		public String sku { get; set; }
 	}
 

@@ -48,8 +48,6 @@ namespace ReverbAccessTests.Listings
 			var service = this.ReverbFactory.CreateOrdersService(this.Config);
 			var orders = await service.GetOrdersAsync(DateTime.UtcNow.AddDays(-200), DateTime.UtcNow);
 
-			var st = orders.GroupBy(x => x.Status).Select(x => x.Key).ToList();
-
 			orders.Should().NotBeNull();
 		}
 

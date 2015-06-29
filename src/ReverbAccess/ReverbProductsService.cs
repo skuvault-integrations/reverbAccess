@@ -19,6 +19,8 @@ namespace ReverbAccess
 	{
 		private readonly WebRequestServices _webRequestServices;
 
+		private const String PreconditionFailedMessage = "Precondition Failed for product {0}. Sku: {1}. Inventory: {2}";
+
 		public ReverbProductsService(ReverbConfig config)
 		{
 			Condition.Requires(config, "config").IsNotNull();
@@ -407,7 +409,21 @@ namespace ReverbAccess
 
 			ActionPolicies.Submit.Do(() =>
 			{
-				this._webRequestServices.PutFormatData(ReverbCommand.UpdateProduct, data, jsonContent);
+				try
+				{
+					this._webRequestServices.PutFormatData(ReverbCommand.UpdateProduct, data, jsonContent);
+				}
+				catch (Exception ex)
+				{
+					if (ex.Message.Contains("Precondition Failed"))
+					{
+						ReverbLogger.Log.Error(ex, PreconditionFailedMessage, listing.Slug, listing.Sku, listing.Inventory);
+					}
+					else
+					{
+						throw ex;
+					}
+				}
 
 				//API requirement
 				this.CreateApiDelay().Wait();
@@ -421,7 +437,21 @@ namespace ReverbAccess
 
 			await ActionPolicies.SubmitAsync.Do(async () =>
 			{
-				await this._webRequestServices.PutFormatDataAsync(ReverbCommand.UpdateProduct, data, jsonContent);
+				try
+				{
+					await this._webRequestServices.PutFormatDataAsync(ReverbCommand.UpdateProduct, data, jsonContent);
+				}
+				catch (Exception ex)
+				{
+					if (ex.Message.Contains("Precondition Failed"))
+					{
+						ReverbLogger.Log.Error(ex, PreconditionFailedMessage, listing.Slug, listing.Sku, listing.Inventory);
+					}
+					else
+					{
+						throw ex;
+					}
+				}
 
 				//API requirement
 				await this.CreateApiDelay();

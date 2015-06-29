@@ -8,6 +8,7 @@ using ReverbAccess.Models.Configuration;
 using ReverbAccess.Models.Order;
 using FluentAssertions;
 using LINQtoCSV;
+using Netco.Logging;
 using NUnit.Framework;
 using ReverbAccess.Models.Product;
 
@@ -21,6 +22,8 @@ namespace ReverbAccessTests.Products
 		[SetUp]
 		public void Init()
 		{
+			NetcoLogger.LoggerFactory = new ConsoleLoggerFactory();
+			
 			const string credentialsFilePath = @"..\..\Files\ReverbCredentials.csv";
 
 			var cc = new CsvContext();
@@ -57,15 +60,23 @@ namespace ReverbAccessTests.Products
 		{
 			var service = this.ReverbFactory.CreateProductsService(this.Config);
 
-			var listingToUpdate = new ReverbProductEntity
+			var listingToUpdate1 = new ReverbProductEntity
 			{
-				Slug = "603158",
-				Sku = "tester1234",
-				Inventory = 12,
+				Slug = "603178",
+				Sku = "inventory-20",
+				Inventory = 7,
 				HasInventory = true
 			};
 
-			service.UpdateProducts(new[] {listingToUpdate});
+			var listingToUpdate2 = new ReverbProductEntity
+			{
+				Slug = "603158",
+				Sku = "tester1234",
+				Inventory = 23,
+				HasInventory = true
+			};
+
+			service.UpdateProducts(new[] {listingToUpdate1, listingToUpdate2});
 		}
 
 		[Test]

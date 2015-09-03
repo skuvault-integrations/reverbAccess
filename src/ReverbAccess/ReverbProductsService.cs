@@ -20,6 +20,7 @@ namespace ReverbAccess
 		private readonly WebRequestServices _webRequestServices;
 
 		private const String PreconditionFailedMessage = "Precondition Failed for product {0}. Sku: {1}. Inventory: {2}";
+		private const String NotFoundMessage = "Not found product {0}. Sku: {1}. Inventory: {2}";
 
 		public ReverbProductsService(ReverbConfig config)
 		{
@@ -419,6 +420,10 @@ namespace ReverbAccess
 					{
 						ReverbLogger.Log.Error(ex, PreconditionFailedMessage, listing.Slug, listing.Sku, listing.Inventory);
 					}
+					else if (ex.Message.Contains("(404) Not Found"))
+					{
+						ReverbLogger.Log.Error(ex, NotFoundMessage, listing.Slug, listing.Sku, listing.Inventory);
+					}
 					else
 					{
 						throw ex;
@@ -446,6 +451,10 @@ namespace ReverbAccess
 					if (ex.Message.Contains("Precondition Failed"))
 					{
 						ReverbLogger.Log.Error(ex, PreconditionFailedMessage, listing.Slug, listing.Sku, listing.Inventory);
+					}
+					else if (ex.Message.Contains("(404) Not Found"))
+					{
+						ReverbLogger.Log.Error(ex, NotFoundMessage, listing.Slug, listing.Sku, listing.Inventory);
 					}
 					else
 					{

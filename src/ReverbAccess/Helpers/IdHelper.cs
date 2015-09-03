@@ -15,13 +15,17 @@ namespace ReverbAccess.Helpers
 
 			foreach (var item in partsUrl)
 			{
-				if (item.Length < 6) continue;
-				String presumablyId = item.Substring(0, 6);
+				if (!item.Contains("-")) continue;
 
-				Int32 intId = 0;
-				if (Int32.TryParse(presumablyId, out intId))
+				var parts = item.Split('-');
+
+				foreach (var presumablyId in parts)
 				{
-					return presumablyId;
+					Int32 intId = 0;
+					if (Int32.TryParse(presumablyId, out intId))
+					{
+						return presumablyId;
+					}
 				}
 			}
 

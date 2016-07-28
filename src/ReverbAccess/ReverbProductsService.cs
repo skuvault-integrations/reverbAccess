@@ -21,6 +21,7 @@ namespace ReverbAccess
 
 		private const String PreconditionFailedMessage = "Precondition Failed for product {0}. Sku: {1}. Inventory: {2}";
 		private const String NotFoundMessage = "Not found product {0}. Sku: {1}. Inventory: {2}";
+		private const String UnprocessableEntityMessage = "Unprocessable Entity for product {0}. Sku: {1}. Inventory: {2}";
 
 		public ReverbProductsService(ReverbConfig config)
 		{
@@ -424,6 +425,10 @@ namespace ReverbAccess
 					{
 						ReverbLogger.Log.Error(ex, NotFoundMessage, listing.Slug, listing.Sku, listing.Inventory);
 					}
+					else if (ex.Message.Contains("Unprocessable Entity"))
+					{
+						ReverbLogger.Log.Error(ex, UnprocessableEntityMessage, listing.Slug, listing.Sku, listing.Inventory);
+					}
 					else
 					{
 						throw ex;
@@ -455,6 +460,10 @@ namespace ReverbAccess
 					else if (ex.Message.Contains("(404) Not Found"))
 					{
 						ReverbLogger.Log.Error(ex, NotFoundMessage, listing.Slug, listing.Sku, listing.Inventory);
+					}
+					else if (ex.Message.Contains("Unprocessable Entity"))
+					{
+						ReverbLogger.Log.Error(ex, UnprocessableEntityMessage, listing.Slug, listing.Sku, listing.Inventory);
 					}
 					else
 					{

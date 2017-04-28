@@ -179,7 +179,8 @@ namespace ReverbAccess.Services
 			var request = (HttpWebRequest) WebRequest.Create(uri);
 
 			request.Method = WebRequestMethods.Http.Get;
-			request.Headers.Add("X-Auth-Token", this.CreateAuthenticationHeader());
+			request.Headers.Add( "Authorization", this.CreateAuthenticationHeader() );
+			request.ContentType = "application/hal+json";
 
 			if (!String.IsNullOrEmpty(this.GetLogin()) && !String.IsNullOrEmpty(this.GetPassword()))
 			{
@@ -205,7 +206,7 @@ namespace ReverbAccess.Services
 			}
 
 			if (command != ReverbCommand.GetToken)
-				request.Headers.Add("X-Auth-Token", this.CreateAuthenticationHeader());
+				request.Headers.Add("Authorization", this.CreateAuthenticationHeader());
 
 			using (var writer = new StreamWriter(request.GetRequestStream()))
 				writer.Write(content);
@@ -222,7 +223,7 @@ namespace ReverbAccess.Services
 
 			request.Method = WebRequestMethods.Http.Put;
 			request.ContentType = "application/x-www-form-urlencoded";
-			request.Headers.Add("X-Auth-Token", this.CreateAuthenticationHeader());
+			request.Headers.Add("Authorization", this.CreateAuthenticationHeader());
 
 			if (!String.IsNullOrEmpty(this.GetLogin()) && !String.IsNullOrEmpty(this.GetPassword()))
 			{
@@ -244,7 +245,7 @@ namespace ReverbAccess.Services
 
 			request.Method = WebRequestMethods.Http.Put;
 			request.ContentType = "application/x-www-form-urlencoded";
-			request.Headers.Add("X-Auth-Token", this.CreateAuthenticationHeader());
+			request.Headers.Add("Authorization", this.CreateAuthenticationHeader());
 
 			if (!String.IsNullOrEmpty(this.GetLogin()) && !String.IsNullOrEmpty(this.GetPassword()))
 			{
@@ -286,7 +287,7 @@ namespace ReverbAccess.Services
 
 		private string CreateAuthenticationHeader()
 		{
-			return this._config.Token;
+			return "Bearer " + this._config.Token;
 		}
 
 		private string GetLogin()

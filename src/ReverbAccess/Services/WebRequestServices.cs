@@ -174,6 +174,7 @@ namespace ReverbAccess.Services
 		private HttpWebRequest CreateGetServiceGetRequest(string url)
 		{
 			this.AllowInvalidCertificate();
+			this.InitSecurityProtocol();
 
 			var uri = new Uri(url);
 			var request = (HttpWebRequest) WebRequest.Create(uri);
@@ -193,6 +194,7 @@ namespace ReverbAccess.Services
 		private HttpWebRequest CreateServicePostRequest(ReverbCommand command, string endpoint, string content)
 		{
 			this.AllowInvalidCertificate();
+			this.InitSecurityProtocol();
 
 			var uri = new Uri(string.Concat(this._host, command.Command, endpoint));
 			var request = (HttpWebRequest) WebRequest.Create(uri);
@@ -217,6 +219,7 @@ namespace ReverbAccess.Services
 		private HttpWebRequest CreateServicePutRequest(ReverbCommand command, string endpoint, string content)
 		{
 			this.AllowInvalidCertificate();
+			this.InitSecurityProtocol();
 
 			var uri = new Uri(string.Concat(this._host, command.Command, endpoint));
 			var request = (HttpWebRequest) WebRequest.Create(uri);
@@ -239,6 +242,7 @@ namespace ReverbAccess.Services
 		private HttpWebRequest CreateServicePutFormatRequest(ReverbCommand command, string[] data, string content)
 		{
 			this.AllowInvalidCertificate();
+			this.InitSecurityProtocol();
 
 			var uri = new Uri(string.Concat(this._host, String.Format(command.Command, data)));
 			var request = (HttpWebRequest) WebRequest.Create(uri);
@@ -319,6 +323,11 @@ namespace ReverbAccess.Services
 		private void AllowInvalidCertificate()
 		{
 			ServicePointManager.ServerCertificateValidationCallback += AllowCert;
+		}
+
+		private void InitSecurityProtocol()
+		{
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 		}
 
 		private bool AllowCert(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors error)

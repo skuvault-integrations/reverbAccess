@@ -181,6 +181,7 @@ namespace ReverbAccess.Services
 
 			request.Method = WebRequestMethods.Http.Get;
 			request.Headers.Add( "Authorization", this.CreateAuthenticationHeader() );
+			request.UserAgent = "SkuVault";
 			request.ContentType = "application/hal+json";
 
 			if (!String.IsNullOrEmpty(this.GetLogin()) && !String.IsNullOrEmpty(this.GetPassword()))
@@ -200,6 +201,7 @@ namespace ReverbAccess.Services
 			var request = (HttpWebRequest) WebRequest.Create(uri);
 
 			request.Method = WebRequestMethods.Http.Post;
+			request.UserAgent = "SkuVault";
 			request.ContentType = "application/json";
 
 			if (!String.IsNullOrEmpty(this.GetLogin()) && !String.IsNullOrEmpty(this.GetPassword()))
@@ -226,7 +228,8 @@ namespace ReverbAccess.Services
 
 			request.Method = WebRequestMethods.Http.Put;
 			request.ContentType = "application/x-www-form-urlencoded";
-			request.Headers.Add("Authorization", this.CreateAuthenticationHeader());
+			request.Headers.Add("Authorization", CreateAuthenticationHeader());
+			request.UserAgent = "SkuVault";
 
 			if (!String.IsNullOrEmpty(this.GetLogin()) && !String.IsNullOrEmpty(this.GetPassword()))
 			{
@@ -249,7 +252,8 @@ namespace ReverbAccess.Services
 
 			request.Method = WebRequestMethods.Http.Put;
 			request.ContentType = "application/x-www-form-urlencoded";
-			request.Headers.Add("Authorization", this.CreateAuthenticationHeader());
+			request.Headers.Add("Authorization", CreateAuthenticationHeader());
+			request.UserAgent = "SkuVault";
 
 			if (!String.IsNullOrEmpty(this.GetLogin()) && !String.IsNullOrEmpty(this.GetPassword()))
 			{

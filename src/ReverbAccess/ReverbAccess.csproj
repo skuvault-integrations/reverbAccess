@@ -60,6 +60,7 @@
     <Compile Include="Helpers\IdHelper.cs" />
     <Compile Include="Models\Auth\UserKeyToken.cs" />
     <Compile Include="Models\Auth\UserKeyType.cs" />
+    <Compile Include="Models\Error\ReverbErrorData.cs" />
     <Compile Include="Models\Order\ReverbOrderEntity.cs" />
     <Compile Include="Models\Order\ReverbOrderStatusEnum.cs" />
     <Compile Include="Models\Product\ReverbProductEntity.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Models\ReverbLinks.cs" />
     <Compile Include="Models\ReverbLocation.cs" />
     <Compile Include="Models\ReverbPrice.cs" />
+    <Compile Include="Models\Shipping\ReverbShippingEntity.cs" />
     <Compile Include="ReverbFactory.cs" />
     <Compile Include="ReverbProductsService.cs" />
     <Compile Include="ReverbOrdersService.cs" />

@@ -45,6 +45,11 @@ namespace ReverbAccess.Services
 			return endpoint;
 		}
 
+		public static string ShipOrdersParams(string orderNumber) {
+			var endpoint = string.Format("/{0}/ship", orderNumber);
+			return endpoint;
+		}
+
 		public static string CreateProductsParams(String state)
 		{
 			var endpoint = string.Format("?{0}={1}",

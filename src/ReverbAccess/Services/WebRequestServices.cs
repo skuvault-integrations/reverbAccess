@@ -123,6 +123,13 @@ namespace ReverbAccess.Services
 				this.LogUpdateInfo(this._config.Token, endpoint, ((HttpWebResponse) response).StatusCode, jsonContent);
 		}
 
+		public void PutJSONData(ReverbCommand command, string[] data, string jsonContent) {
+			var request = this.CreateServicePutJSONRequest(command, data, jsonContent);
+			this.LogPutInfo(this._config.Token, String.Join(",", data), jsonContent);
+			using (var response = (HttpWebResponse)request.GetResponse())
+				this.LogUpdateInfo(this._config.Token, String.Join(",", data), response.StatusCode, jsonContent);
+		}
+
 		public void PutFormatData(ReverbCommand command, string[] data, string jsonContent)
 		{
 			var request = this.CreateServicePutFormatRequest(command, data, jsonContent);
@@ -137,6 +144,29 @@ namespace ReverbAccess.Services
 			this.LogPutInfo(this._config.Token, String.Join(",", data), jsonContent);
 			using (var response = await request.GetResponseAsync())
 				this.LogUpdateInfo(this._config.Token, String.Join(",", data), ((HttpWebResponse) response).StatusCode, jsonContent);
+		}
+
+		public string PostData(ReverbCommand command, string endpoint, string jsonContent) {
+			var request = this.CreateServicePostRequest(command, endpoint, jsonContent);
+			try {
+				using (var response = (HttpWebResponse)request.GetResponse()) {
+					StreamReader reader = new StreamReader(response.GetResponseStream());
+					StringBuilder output = new StringBuilder();
+					output.Append(reader.ReadToEnd());
+
+					response.Close();
+
+					return String.Empty;
+				}
+			} catch (WebException ex) {
+				string exMessage = ex.Message;
+				if (ex.Response != null) {
+					using (var responseReader = new StreamReader(ex.Response.GetResponseStream())) {
+						exMessage = responseReader.ReadToEnd();
+					}
+				}
+				return exMessage;
+			}
 		}
 
 		public T GetPostData<T>(ReverbCommand command, string endpoint, string jsonContent)
@@ -257,6 +287,28 @@ namespace ReverbAccess.Services
 
 			if (!String.IsNullOrEmpty(this.GetLogin()) && !String.IsNullOrEmpty(this.GetPassword()))
 			{
+				request.Credentials = new NetworkCredential(this.GetLogin(), this.GetPassword());
+			}
+
+			using (var writer = new StreamWriter(request.GetRequestStream()))
+				writer.Write(content);
+
+			return request;
+		}
+
+		private HttpWebRequest CreateServicePutJSONRequest(ReverbCommand command, string[] data, string content) {
+			this.AllowInvalidCertificate();
+			this.InitSecurityProtocol();
+
+			var uri = new Uri(string.Concat(this._host, String.Format(command.Command, data)));
+			var request = (HttpWebRequest)WebRequest.Create(uri);
+
+			request.Method = WebRequestMethods.Http.Put;
+			request.ContentType = "application/hal+json";
+			request.Headers.Add("Authorization", CreateAuthenticationHeader());
+			request.UserAgent = "SkuVault";
+
+			if (!String.IsNullOrEmpty(this.GetLogin()) && !String.IsNullOrEmpty(this.GetPassword())) {
 				request.Credentials = new NetworkCredential(this.GetLogin(), this.GetPassword());
 			}
 

@@ -8,6 +8,8 @@ using ReverbAccess.Services;
 using CuttingEdge.Conditions;
 using System;
 using ReverbAccess.Models.Order;
+using ReverbAccess.Models.Shipping;
+using ServiceStack;
 
 namespace ReverbAccess
 {
@@ -415,6 +417,16 @@ namespace ReverbAccess
 			});
 
 			return data;
+		}
+
+		public string ShipOrder(string orderNumber, ReverbShippingEntity shippingEntity) {
+			var endpoint = ParamsBuilder.ShipOrdersParams(orderNumber);
+			var jsonContent = shippingEntity.ToJson();
+			var returnedVal = String.Empty;
+			ActionPolicies.Submit.Do(() => {
+				returnedVal = _webRequestServices.PostData(ReverbCommand.ShipOrdersByID, endpoint, jsonContent);
+			});
+			return returnedVal;
 		}
 	}
 }

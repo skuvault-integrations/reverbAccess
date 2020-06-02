@@ -45,6 +45,7 @@ namespace ReverbAccess.Models.Product
 		public ReverbProductItemLinks _links { get; set; }
 
 		public ReverbProductItemShipping shipping { get; set; }
+		public bool has_inventory { get; set; }
 
 		public Int32 inventory { get; set; }
 

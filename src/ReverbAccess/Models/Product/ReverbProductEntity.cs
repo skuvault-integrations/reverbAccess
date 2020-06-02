@@ -16,5 +16,7 @@ namespace ReverbAccess.Models.Product
 		public string Sku { get; set; }
 
 		public string Slug { get; set; }
+
+		public ReverbPrice Price { get; set; }
 	}
 }

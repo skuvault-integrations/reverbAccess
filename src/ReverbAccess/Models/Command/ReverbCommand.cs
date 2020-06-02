@@ -6,6 +6,7 @@
 		public static readonly ReverbCommand GetToken = new ReverbCommand("/api/auth/email");
 
 		public static readonly ReverbCommand GetProducts = new ReverbCommand("/api/my/listings.json");
+		public static readonly ReverbCommand GetProductsBySKU = new ReverbCommand("/api/my/listings");
 		public static readonly ReverbCommand GetProductsDrafts = new ReverbCommand("/api/my/listings/drafts");
 		public static readonly ReverbCommand GetProductsById = new ReverbCommand("/api/listings/{0}");
 		public static readonly ReverbCommand UpdateProduct = new ReverbCommand("/api/listings/{0}");
@@ -17,6 +18,8 @@
 
 		public static readonly ReverbCommand GetOrdersSellingAwaitingShipment =
 			new ReverbCommand("/api/my/orders/selling/awaiting_shipment");
+
+		public static readonly ReverbCommand ShipOrdersByID = new ReverbCommand("/api/my/orders/selling");
 
 		private ReverbCommand(string command)
 		{

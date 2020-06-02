@@ -82,6 +82,7 @@ namespace ReverbAccess
 			return data;
 		}
 
+		[Obsolete("Getting products by ID is no longer supported by Reverb and results in a 404 error.")]
 		public ReverbProductData GetProductsById(String id)
 		{
 			ReverbProductData data;
@@ -94,6 +95,7 @@ namespace ReverbAccess
 			return data;
 		}
 
+		[Obsolete("Getting products by ID is no longer supported by Reverb and results in a 404 error.")]
 		public async Task<ReverbProductData> GetProductsByIdAsync(String id)
 		{
 			ReverbProductData data;
@@ -106,6 +108,14 @@ namespace ReverbAccess
 			return data;
 		}
 
+		public ReverbProduct GetProductsBySKU(String sku) {
+			ReverbProduct data;
+			var endpoint = $"?sku={sku}&state=all";
+			data = this.CollectProductsBySKU(endpoint);
+			data = data ?? new ReverbProduct();
+			return data;
+		}
+
 		public void UpdateProducts(IEnumerable<ReverbProductEntity> products)
 		{
 			foreach (var item in products)
@@ -115,7 +125,8 @@ namespace ReverbAccess
 					Sku = item.Sku,
 					Slug = item.Slug,
 					HasInventory = item.HasInventory,
-					Inventory = item.Inventory
+					Inventory = item.Inventory,
+					Price = item.Price
 				};
 
 				this.UpdateProductQuantity(param);
@@ -366,6 +377,20 @@ namespace ReverbAccess
 
 		#endregion
 
+		#region products by sku
+		private ReverbProduct CollectProductsBySKU(string endpoint) {
+			ReverbProduct data = null;
+
+			ActionPolicies.Get.Do(() => {
+				data = this._webRequestServices.GetResponse<ReverbProduct>(ReverbCommand.GetProductsBySKU, endpoint);
+				//API requirement
+				this.CreateApiDelay().Wait();
+			});
+
+			return data;
+		}
+		#endregion
+
 		#region products by id
 
 		private ReverbProductData CollectProductsById(string endpoint, string id)
@@ -404,16 +429,23 @@ namespace ReverbAccess
 
 		#region update quantity
 
-		private void UpdateProductQuantity(ReverbProductParam listing)
-		{
+		internal class jsonContainer {
+			public bool has_inventory { get; set; }
+			public int inventory { get; set; }
+			public ReverbPrice price { get; set; }
+		}
+
+		private void UpdateProductQuantity(ReverbProductParam listing) { 			
+
 			var data = new[] {listing.Slug};
-			var jsonContent = String.Format(@"has_inventory={0}&inventory={1}", listing.HasInventory, listing.Inventory);
+			var container = new jsonContainer() { has_inventory = listing.HasInventory, inventory = listing.Inventory, price = listing.Price };
+			var jsonContent = container.ToJson();
 
 			ActionPolicies.Submit.Do(() =>
 			{
 				try
 				{
-					this._webRequestServices.PutFormatData(ReverbCommand.UpdateProduct, data, jsonContent);
+					this._webRequestServices.PutJSONData(ReverbCommand.UpdateProduct, data, jsonContent);
 				}
 				catch (Exception ex)
 				{

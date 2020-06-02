@@ -21,5 +21,7 @@ namespace ReverbAccess.Models.Product
 
 		[DataMember(Name = "slug")]
 		public string Slug { get; set; }
+		[DataMember(Name = "price")]
+		public ReverbPrice Price { get; set; }
 	}
 }
